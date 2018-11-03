@@ -1,0 +1,13 @@
+#noticias{
+  margin-top: 60px;
+}
+
+.card{
+  margin-left:20px;
+  margin-right: 20px;
+  padding: 0px;
+}
+
+.card-body .btn{
+  text-align: center;
+}
