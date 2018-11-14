@@ -7,20 +7,6 @@
   $query = "select * FROM `Enfrentamiento` JOIN `Pareja` ON ParejaidPareja=idPareja";
   $result = $db->consulta($query);
 
-  /*$arrayEmpleados = array();
-  while ($row_usuario = mysqli_fetch_assoc($result))
-    $arrayEmpleados[] = $row_usuario;
-    */
-
-  $numEnfren = mysqli_num_rows($result);
-/*  if ($numEnfren > 0) {
-     while ($rowEnfren = mysqli_fetch_assoc($result)) {
-        echo "Capitan: ".$rowEnfren['capitan'];
-        echo "Deportista: ".$rowEnfren['deportista'];
-     }
-  }
-  */
-
  ?>
 
 <html lang="es">
@@ -99,27 +85,15 @@
       <?php foreach ($result as $rowEnfren): ?>
         <tr>
 
+          <td> <?= $rowEnfren['idPareja']?> </td>
+          <td> <?= $rowEnfren['capitan']?> </br> <?= $rowEnfren['deportista'] ?> </td>
+          <td>4</td>
+          <td><?= $rowEnfren['resultado']?></td>
+          <td><?= $rowEnfren['resultado']?></td>
           <td>
-            <?= $rowEnfren['idPareja']?>
-          </td>
-          <td>
-            <?= $rowEnfren['capitan']?>
-          </br>
-            <?= $rowEnfren['deportista'] ?>
-          </td>
-          <td class="modificable">
-            4
-          </td>
-          <td class="modificable">
-            <?= $rowEnfren['resultado']?>
-          </td>
-          <td class="modificable">
-            <?= $rowEnfren['resultado']?>
-          </td>
-        <td>
 						<a class="add" title="Add" data-toggle="tooltip">Add</a>
             <a class="edit" title="Edit" data-toggle="tooltip">Edit</a>
-        </td>
+          </td>
 
         </tr>
       <?php endforeach; ?>
@@ -139,19 +113,38 @@
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
 	var actions = $("table td:last-child").html();
-	// Edit row on edit button click td:not(:last-of-type):not(:first-of-type)
+
+  // Add row on add button click
+	$(document).on("click", ".add", function(){
+		var empty = false;
+		var input = $(this).parents("tr").find('input[type="text"]');
+        input.each(function(){
+			if(!$(this).val()){
+				$(this).addClass("error");
+				empty = true;
+			} else{
+                $(this).removeClass("error");
+            }
+		});
+		$(this).parents("tr").find(".error").first().focus();
+		if(!empty){
+			input.each(function(){
+				$(this).parent("td").html($(this).val());
+			});
+			$(this).parents("tr").find(".edit").toggle();
+			//$(".add-new").removeAttr("disabled");
+		}
+    });
+
+	// Edit row on edit button click
 	$(document).on("click", ".edit", function(){
         $(this).parents("tr").find("td:not(:nth-child(1)):not(:nth-child(2)):not(:last-child)").each(function(){
 			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
 		});
-		$(this).parents("tr").find(".add, .edit").toggle();
-		$(".add-new").attr("disabled", "disabled");
+		$(this).parents("tr").find(".edit").toggle();
+		//$(".add-new").attr("disabled", "disabled");
     });
-	// Delete row on delete button click
-	$(document).on("click", ".delete", function(){
-        $(this).parents("tr").remove();
-		$(".add-new").removeAttr("disabled");
-    });
+
 });
 </script>
 </body>
