@@ -98,6 +98,7 @@
     <tbody>
       <?php foreach ($result as $rowEnfren): ?>
         <tr>
+
           <td>
             <?= $rowEnfren['idPareja']?>
           </td>
@@ -106,6 +107,20 @@
           </br>
             <?= $rowEnfren['deportista'] ?>
           </td>
+          <td class="modificable">
+            4
+          </td>
+          <td class="modificable">
+            <?= $rowEnfren['resultado']?>
+          </td>
+          <td class="modificable">
+            <?= $rowEnfren['resultado']?>
+          </td>
+        <td>
+						<a class="add" title="Add" data-toggle="tooltip">Add</a>
+            <a class="edit" title="Edit" data-toggle="tooltip">Edit</a>
+        </td>
+
         </tr>
       <?php endforeach; ?>
     </tbody>
@@ -120,6 +135,25 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+	var actions = $("table td:last-child").html();
+	// Edit row on edit button click td:not(:last-of-type):not(:first-of-type)
+	$(document).on("click", ".edit", function(){
+        $(this).parents("tr").find("td:not(:nth-child(1)):not(:nth-child(2)):not(:last-child)").each(function(){
+			$(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">');
+		});
+		$(this).parents("tr").find(".add, .edit").toggle();
+		$(".add-new").attr("disabled", "disabled");
+    });
+	// Delete row on delete button click
+	$(document).on("click", ".delete", function(){
+        $(this).parents("tr").remove();
+		$(".add-new").removeAttr("disabled");
+    });
+});
+</script>
 </body>
 
 </html>
